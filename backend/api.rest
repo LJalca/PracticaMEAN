@@ -1,0 +1,58 @@
+### 1. Obtener todos los empleados
+GET http://localhost:3000/api/v1/empleados
+Accept: application/json
+
+###
+
+### 2. Petición de Creación Exitosa (POST)
+POST http://localhost:3000/api/v1/empleados
+Content-Type: application/json
+
+{
+  "nombre": "Andrés Mendoza",
+  "cargo": "Arquitecto de Software",
+  "departamento": "Innovación",
+  "sueldo": 4500
+}
+
+###
+
+### 3. Petición de Inyección Inválida (Activación del DTO - Reto 2)
+POST http://localhost:3000/api/v1/empleados
+Content-Type: application/json
+
+{
+  "nombre": "An",
+  "cargo": "Developer",
+  "departamento": "TI",
+  "sueldo": -200
+}
+
+###
+
+### 4. Obtener empleado por ID válido (Reemplazar con un ID existente de MongoDB)
+GET http://localhost:3000/api/v1/empleados/6aaebc478764a1a0b246ddad
+Accept: application/json
+
+###
+
+### 5. Petición con ID inválido (Activación DTO de parámetros)
+GET http://localhost:3000/api/v1/empleados/123invalido
+Accept: application/json
+
+###
+
+### 6. Actualizar empleado (PUT)
+PUT http://localhost:3000/api/v1/empleados/6aaebc478764a1a0b246ddad
+Content-Type: application/json
+
+{
+  "sueldo": 5200,
+  "cargo": "Líder Técnico"
+}
+
+###
+
+### 7. Eliminar empleado (DELETE)
+DELETE http://localhost:3000/api/v1/empleados/6aaebc478764a1a0b246ddad
+Accept: application/json
