@@ -18,7 +18,7 @@ module.exports = {
       ref: 'origin/main',
       repo: 'git@github.com:LJalca/PracticaMEAN.git',
       path: '/home/ubuntu/tu-app',
-      'post-deploy': 'PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm --prefix backend install --legacy-peer-deps --no-audit --no-fund && npm --prefix backend run build && pm2 reload backend/ecosystem.config.cjs --env production',
+      'post-deploy': 'set -a && . /home/ubuntu/tu-app/shared/backend.env && set +a && PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm --prefix backend install --legacy-peer-deps --no-audit --no-fund && npm --prefix backend run build && pm2 reload backend/ecosystem.config.cjs --env production --update-env',
       ssh_options: 'IdentityFile=C:/Users/LAJS/Documents/clj/MaeUPS/AWSPC/ljalca2626.pem'
     }
   }
