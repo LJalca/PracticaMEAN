@@ -1,5 +1,5 @@
-import app from './app';
-import { connectDatabase } from './config/database';
+import app from './app.js';
+import { connectDatabase } from './config/database.js';
 
 const port = app.get('puerto') || 3000;
 

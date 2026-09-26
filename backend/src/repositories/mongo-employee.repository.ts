@@ -1,4 +1,4 @@
-import { EmployeeRepositoryInterface } from './employee.repository.interface';
+import { EmployeeRepositoryInterface } from './employee.repository.interface.js';
 import Empleado from '../models/empleado.js';
 
 export class MongoEmployeeRepository implements EmployeeRepositoryInterface {

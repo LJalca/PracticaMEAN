@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ZodSchema, ZodError } from 'zod';
-import { ResponseWrapper } from '../utils/response.wrapper';
+import { ResponseWrapper } from '../utils/response.wrapper.js';
 
 export const validateBody = (schema: ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {

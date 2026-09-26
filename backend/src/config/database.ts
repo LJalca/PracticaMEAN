@@ -2,10 +2,14 @@
 import mongoose from 'mongoose';
 
 export const connectDatabase = async (): Promise<void> => {
-  const MONGO_URI =
-    process.env.MONGODB_URI
-      ? `${process.env.MONGODB_URI.replace(/\/$/, '')}/usuarios_db?retryWrites=true&w=majority`
-      : 'mongodb+srv://luiggijalca_db_user:XF5yTOwhB107o9i7@cluster0.e7jq226.mongodb.net/usuarios_db?retryWrites=true&w=majority';
+  const baseUri = process.env.MONGODB_URI;
+
+  if (!baseUri) {
+    console.error('❌ Falta la variable de entorno MONGODB_URI');
+    process.exit(1);
+  }
+
+  const MONGO_URI = `${baseUri.replace(/\/$/, '')}/usuarios_db?retryWrites=true&w=majority`;
 
   try {
     await mongoose.connect(MONGO_URI);

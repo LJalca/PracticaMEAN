@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
-import { ResponseWrapper } from '../utils/response.wrapper';
+import { ResponseWrapper } from '../utils/response.wrapper.js';
 
 export const globalErrorHandler = (
   err: any,

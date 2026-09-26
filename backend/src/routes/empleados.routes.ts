@@ -1,15 +1,15 @@
 import { Router } from 'express';
-import { EmpleadoController } from '../controllers/empleados.controllers';
-import { MongoEmployeeRepository } from '../repositories/mongo-employee.repository';
+import { EmpleadoController } from '../controllers/empleados.controllers.js';
+import { MongoEmployeeRepository } from '../repositories/mongo-employee.repository.js';
 import {
   CreateEmployeeSchema,
   UpdateEmployeeSchema,
   EmployeeParamsSchema,
-} from '../dtos/employee.dto';
+} from '../dtos/employee.dto.js';
 import {
   validateBody,
   validateParams,
-} from '../middlewares/validate.middleware';
+} from '../middlewares/validate.middleware.js';
 
 const router = Router();
 const employeeRepository = new MongoEmployeeRepository();

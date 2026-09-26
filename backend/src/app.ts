@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-import empleadosRoutes from './routes/empleados.routes';
-import { globalErrorHandler } from './middlewares/error.middleware';
+import empleadosRoutes from './routes/empleados.routes.js';
+import { globalErrorHandler } from './middlewares/error.middleware.js';
 
 const app = express();
 

@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
-import IEmpleadoRepository from '../repositories/employee.repository.interface';
-import { ResponseWrapper } from '../utils/response.wrapper';
+import IEmpleadoRepository from '../repositories/employee.repository.interface.js';
+import { ResponseWrapper } from '../utils/response.wrapper.js';
 
 export class EmpleadoController {
   constructor(private empleadoRepository: IEmpleadoRepository) {}
