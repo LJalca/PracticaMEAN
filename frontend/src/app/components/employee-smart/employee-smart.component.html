@@ -1,0 +1,54 @@
+﻿<div class="simple-app-container">
+  <!-- Top Command Bar: New Employee button and counter -->
+  <app-employee-header
+    [employeeCount]="(employees$ | async)?.length ?? 0"
+  ></app-employee-header>
+
+  <!-- Notification bar if any -->
+  @if (notification$ | async; as notif) {
+    <div
+      class="fluent-message-bar"
+      [class.msg-success]="notif.type === 'success'"
+      [class.msg-error]="notif.type === 'error'"
+      [class.msg-info]="notif.type === 'info'"
+    >
+      <span class="msg-text">{{ notif.message }}</span>
+      <button class="msg-close-btn" (click)="handleCloseNotification()" title="Cerrar">✕</button>
+    </div>
+  }
+
+  <!-- Split Layout: Form on the left side, Grid on the right side -->
+  <div class="split-workspace">
+    <!-- Form Side (Always visible) -->
+    <aside class="form-side">
+      <app-employee-form
+        [employee]="employeeToEdit"
+        [isSubmitting]="isSubmitting"
+        (save)="handleSave($event)"
+        (update)="handleUpdate($event)"
+        (close)="handleCloseForm()"
+      ></app-employee-form>
+    </aside>
+
+    <!-- Grid Side (Always visible) -->
+    <main class="grid-side">
+      <app-employee-table
+        [employees]="(employees$ | async) ?? []"
+        [loading]="(loading$ | async) ?? false"
+        [selectedEmployeeId]="(selectedEmployee$ | async)?._id ?? null"
+        (select)="handleSelect($event)"
+        (edit)="handleEdit($event)"
+        (delete)="handlePromptDelete($event)"
+      ></app-employee-table>
+    </main>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<app-employee-delete-modal
+  [isOpen]="isDeleteModalOpen"
+  [employee]="employeeToDelete"
+  [isDeleting]="isDeleting"
+  (confirm)="handleConfirmDelete($event)"
+  (cancel)="handleCancelDelete()"
+></app-employee-delete-modal>

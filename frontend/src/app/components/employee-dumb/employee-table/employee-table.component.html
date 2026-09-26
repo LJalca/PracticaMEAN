@@ -1,0 +1,156 @@
+﻿<div class="o365-table-container">
+  <!-- Fluent Shimmer / Loading Bar -->
+  @if (loading) {
+    <div class="fluent-progress-bar">
+      <div class="fluent-progress-indicator"></div>
+    </div>
+  }
+
+  <div class="table-responsive">
+    <table class="o365-data-grid">
+      <thead>
+        <tr>
+          <th class="col-avatar"></th>
+          <th class="col-sortable" (click)="sortBy('nombre')">
+            <div class="th-content">
+              <span>Colaborador / Identidad</span>
+              @if (sortColumn === 'nombre') {
+                <span class="sort-indicator">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+              }
+            </div>
+          </th>
+          <th class="col-sortable" (click)="sortBy('cargo')">
+            <div class="th-content">
+              <span>Cargo / Posición</span>
+              @if (sortColumn === 'cargo') {
+                <span class="sort-indicator">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+              }
+            </div>
+          </th>
+          <th class="col-sortable" (click)="sortBy('departamento')">
+            <div class="th-content">
+              <span>Departamento</span>
+              @if (sortColumn === 'departamento') {
+                <span class="sort-indicator">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+              }
+            </div>
+          </th>
+          <th class="col-sortable col-right" (click)="sortBy('sueldo')">
+            <div class="th-content th-right">
+              <span>Remuneración (USD)</span>
+              @if (sortColumn === 'sueldo') {
+                <span class="sort-indicator">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+              }
+            </div>
+          </th>
+          <th class="col-center">ID MongoDB</th>
+          <th class="col-actions">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @if (loading && employees.length === 0) {
+          <!-- Skeleton Loading Rows -->
+          @for (item of [1, 2, 3, 4]; track item) {
+            <tr class="skeleton-row">
+              <td colspan="7">
+                <div class="skeleton-shimmer"></div>
+              </td>
+            </tr>
+          }
+        } @else if (employees.length === 0) {
+          <!-- Empty State -->
+          <tr>
+            <td colspan="7" class="empty-state-cell">
+              <div class="empty-state-box">
+                <div class="empty-state-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="9" y1="15" x2="15" y2="15" />
+                  </svg>
+                </div>
+                <h4 class="empty-title">No se encontraron registros de colaboradores</h4>
+                <p class="empty-subtitle">Completa el formulario y pulsa Guardar para registrar un colaborador.</p>
+              </div>
+            </td>
+          </tr>
+        } @else {
+          <!-- Data Rows -->
+          @for (emp of sortedEmployees; track emp._id) {
+            <tr
+              class="data-row"
+              [class.row-selected]="selectedEmployeeId === emp._id"
+              (click)="select.emit(emp)"
+            >
+              <!-- Avatar Circle -->
+              <td class="col-avatar">
+                <div
+                  class="table-avatar"
+                  [style.background-color]="getAvatarColor(emp.nombre)"
+                  [title]="emp.nombre"
+                >
+                  {{ getInitials(emp.nombre) }}
+                </div>
+              </td>
+
+              <!-- Name -->
+              <td class="col-name">
+                <div class="name-cell">
+                  <span class="emp-fullname">{{ emp.nombre }}</span>
+                 
+                </div>
+              </td>
+
+              <!-- Cargo -->
+              <td class="col-cargo">
+                <span class="emp-cargo-text">{{ emp.cargo }}</span>
+              </td>
+
+              <!-- Departamento Tag Badge -->
+              <td class="col-dept">
+                <span class="dept-badge" [ngClass]="getDepartmentBadgeClass(emp.departamento)">
+                  {{ emp.departamento }}
+                </span>
+              </td>
+
+              <!-- Sueldo (Currency) -->
+              <td class="col-sueldo col-right">
+                <span class="sueldo-amount">{{ emp.sueldo | currency:'USD':'symbol':'1.2-2' }}</span>
+              </td>
+
+              <!-- MongoDB ObjectId -->
+              <td class="col-id col-center">
+                <code class="mongo-id-pill" [title]="emp._id">{{ emp._id ? emp._id.substring(0, 8) + '...' : 'N/A' }}</code>
+              </td>
+
+              <!-- Quick Command Actions -->
+              <td class="col-actions" (click)="$event.stopPropagation()">
+                <div class="action-buttons-group">
+                  <button
+                    class="action-icon-btn btn-edit"
+                    (click)="edit.emit(emp)"
+                    title="Editar colaborador"
+                  >
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                  </button>
+                  <button
+                    class="action-icon-btn btn-delete"
+                    (click)="delete.emit(emp)"
+                    title="Eliminar colaborador"
+                  >
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

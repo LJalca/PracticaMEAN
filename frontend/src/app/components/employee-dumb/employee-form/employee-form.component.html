@@ -1,0 +1,126 @@
+﻿<div class="inline-form-card">
+  <!-- Form Header -->
+  <div class="form-card-header">
+    <div class="form-title-group">
+      <div class="form-icon">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div>
+        <h3 class="form-card-title">{{ isEditMode ? 'Editar Colaborador' : 'Nuevo Colaborador' }}</h3>
+        <p class="form-card-subtitle">{{ isEditMode ? 'Modifica los datos del registro' : 'Ingresa los datos para registrar' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Body -->
+  <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="form-card-body">
+    <!-- Field 1: Nombre Completo -->
+    <div class="fluent-form-group">
+      <label class="fluent-label" for="nombre">
+        Nombre Completo <span class="required-star">*</span>
+      </label>
+      <input
+        id="nombre"
+        type="text"
+        class="fluent-input"
+        [class.input-error]="isFieldInvalid('nombre')"
+        placeholder="Ej. Andrés Mendoza"
+        formControlName="nombre"
+      />
+      @if (isFieldInvalid('nombre')) {
+        <span class="field-error-msg">El nombre debe tener al menos 3 caracteres.</span>
+      }
+    </div>
+
+    <!-- Field 2: Cargo / Posición -->
+    <div class="fluent-form-group">
+      <label class="fluent-label" for="cargo">
+        Cargo / Posición <span class="required-star">*</span>
+      </label>
+      <input
+        id="cargo"
+        type="text"
+        class="fluent-input"
+        [class.input-error]="isFieldInvalid('cargo')"
+        placeholder="Ej. Arquitecto de Software"
+        formControlName="cargo"
+      />
+      @if (isFieldInvalid('cargo')) {
+        <span class="field-error-msg">El cargo debe tener al menos 2 caracteres.</span>
+      }
+    </div>
+
+    <!-- Field 3: Departamento -->
+    <div class="fluent-form-group">
+      <label class="fluent-label" for="departamento">
+        Departamento <span class="required-star">*</span>
+      </label>
+      <input
+        id="departamento"
+        type="text"
+        list="dept-datalist"
+        class="fluent-input"
+        [class.input-error]="isFieldInvalid('departamento')"
+        placeholder="Ej. Innovación / TI"
+        formControlName="departamento"
+      />
+      <datalist id="dept-datalist">
+        @for (opt of departmentOptions; track opt) {
+          <option [value]="opt"></option>
+        }
+      </datalist>
+      @if (isFieldInvalid('departamento')) {
+        <span class="field-error-msg">El departamento debe tener al menos 2 caracteres.</span>
+      }
+    </div>
+
+    <!-- Field 4: Sueldo Mensual -->
+    <div class="fluent-form-group">
+      <label class="fluent-label" for="sueldo">
+        Remuneración Mensual (USD) <span class="required-star">*</span>
+      </label>
+      <div class="currency-input-wrapper">
+        <span class="currency-prefix">$</span>
+        <input
+          id="sueldo"
+          type="number"
+          step="50"
+          min="1"
+          class="fluent-input input-currency"
+          [class.input-error]="isFieldInvalid('sueldo')"
+          placeholder="Ej. 4500.00"
+          formControlName="sueldo"
+        />
+      </div>
+      @if (isFieldInvalid('sueldo')) {
+        <span class="field-error-msg">El sueldo debe ser un número positivo mayor a 0.</span>
+      }
+    </div>
+
+    <!-- Form Footer (Actions) -->
+    <div class="form-card-footer">
+      <button
+        type="button"
+        class="fluent-btn-primary"
+        (click)="onNew()"
+        [disabled]="isSubmitting"
+      >
+        Nuevo
+      </button>
+      <button
+        type="submit"
+        class="fluent-btn-primary"
+        [disabled]="employeeForm.invalid || isSubmitting"
+      >
+        @if (isSubmitting) {
+          <span class="btn-spinner"></span>
+          <span>Guardando...</span>
+        } @else {
+          <span>{{ isEditMode ? 'Actualizar' : 'Guardar' }}</span>
+        }
+      </button>
+    </div>
+  </form>
+</div>

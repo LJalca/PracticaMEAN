@@ -1,0 +1,79 @@
+.simple-app-container {
+  min-height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Split Layout: Form alongside Grid */
+.split-workspace {
+  display: flex;
+  gap: 20px;
+  padding: 16px 20px;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.form-side {
+  width: 330px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 16px;
+}
+
+.grid-side {
+  flex: 1;
+  min-width: 0;
+}
+
+/* System Message Bar */
+.fluent-message-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  margin: 8px 20px 0 20px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.msg-success {
+  background-color: #dff6dd;
+  border: 1px solid #107c41;
+  color: #0e7037;
+}
+
+.msg-error {
+  background-color: #fde7e9;
+  border: 1px solid #a80000;
+  color: #a80000;
+}
+
+.msg-info {
+  background-color: #eff6fc;
+  border: 1px solid #0f6cbd;
+  color: #0f6cbd;
+}
+
+.msg-text {
+  font-weight: 500;
+}
+
+.msg-close-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+@media (max-width: 900px) {
+  .split-workspace {
+    flex-direction: column;
+  }
+  .form-side {
+    width: 100%;
+    position: static;
+  }
+}

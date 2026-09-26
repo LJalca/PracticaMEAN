@@ -1,0 +1,93 @@
+config:
+  target: "http://localhost:3000"
+  plugins:
+    ensure: {}
+  phases:
+    - duration: 20
+      arrivalRate: 5
+      name: "1. Calentamiento"
+    - duration: 30
+      arrivalRate: 15
+      rampTo: 50
+      name: "2. Saturacion maxima"
+  ensure:
+    thresholds:
+      - http.response_time.p99: 250
+    # Se ajusta maxErrorRate al 60% debido a que el 50% de las peticiones son deliberadamente inválidas (400 Bad Request esperados)
+    maxErrorRate: 60
+
+scenarios:
+  - name: "Pruebas de Carga y Resiliencia (3 Buenas y 3 Malas)"
+    flow:
+      # ==========================================
+      # 1. BUENA: Creación de empleado con payload válido
+      # ==========================================
+      - post:
+          url: "/api/v1/empleados"
+          json:
+            nombre: "Andrés Mendoza"
+            cargo: "Software Architect"
+            departamento: "I+D"
+            sueldo: 4200
+          capture:
+            - json: "$.data._id"
+              as: "employeeId"
+      - think: 1
+
+      # ==========================================
+      # 2. BUENA: Creación de segundo empleado válido
+      # ==========================================
+      - post:
+          url: "/api/v1/empleados"
+          json:
+            nombre: "Valeria Morales"
+            cargo: "Frontend Tech Lead"
+            departamento: "Desarrollo Web"
+            sueldo: 3800
+      - think: 1
+
+      # ==========================================
+      # 3. BUENA: Creación de tercer empleado válido
+      # ==========================================
+      - post:
+          url: "/api/v1/empleados"
+          json:
+            nombre: "Carlos Andrade"
+            cargo: "DevOps Engineer"
+            departamento: "Infraestructura"
+            sueldo: 3500
+      - think: 1
+
+      # ==========================================
+      # 4. MALA 1: Longitud insuficiente en nombre (< 3) y cargo (< 2)
+      # ==========================================
+      - post:
+          url: "/api/v1/empleados"
+          json:
+            nombre: "Al"
+            cargo: "D"
+            departamento: "TI"
+            sueldo: 2500
+      - think: 1
+
+      # ==========================================
+      # 5. MALA 2: Sueldo negativo (viola regla z.number().positive())
+      # ==========================================
+      - post:
+          url: "/api/v1/empleados"
+          json:
+            nombre: "Pedro Gómez"
+            cargo: "Backend Developer"
+            departamento: "TI"
+            sueldo: -500
+      - think: 1
+
+      # ==========================================
+      # 6. MALA 3: Sueldo en 0 y falta el campo requerido 'departamento'
+      # ==========================================
+      - post:
+          url: "/api/v1/empleados"
+          json:
+            nombre: "Luis Santos"
+            cargo: "Analista QA"
+            sueldo: 0

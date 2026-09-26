@@ -47,20 +47,21 @@ Debido a cambios internos en las APIs globales de las versiones de Node.js moder
    ```
    *El backend inicializará el compilador dinámico y escuchará peticiones en el puerto `3000`.*
 
-### 2. Despliegue de la Interfaz (Frontend)
+### 2. Despliegue de la Interfaz (Frontend - Angular & Office 365)
 1. En una nueva terminal, navega al directorio del cliente:
    ```bash
    cd frontend
    ```
-2. Instala los paquetes locales y los bundles de estilos visuales (**Bootswatch**):
+2. Instala los paquetes locales de Angular:
    ```bash
    npm install
    ```
 3. Levanta el servidor local de desarrollo de Angular:
    ```bash
-   ng serve -o
+   npm start
+   # o alternativamente: npx ng serve -o
    ```
-   *La aplicación web se desplegará de forma automática en tu navegador en `http://localhost:4200`.*
+   *La aplicación web se desplegará de forma automática en tu navegador en `http://localhost:4200` con diseño corporativo Microsoft Office 365, componentes Smart/Dumb y programación reactiva RxJS.*
 
 ---
 

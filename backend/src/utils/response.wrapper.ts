@@ -20,6 +20,7 @@ export class ResponseWrapper {
       message,
       data,
     };
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
     return res.status(statusCode).json(payload);
   }
 
